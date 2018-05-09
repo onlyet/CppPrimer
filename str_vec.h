@@ -21,7 +21,7 @@ public:
 private:
 	//保证至少能分配一个元素，如果不能则调用reallocate
 	void chk_n_alloc() { if (size() == capacity()) reallocate(); }
-	//分配空间，并且拷贝给定范围元素
+	//分配空间，并且拷贝给定范围元素到新分配的空间
 	std::pair<std::string*, std::string*> alloc_n_copy(const std::string*, const std::string*);	
 	//销毁已构造的元素，并释放内存
 	void free();
