@@ -1,0 +1,39 @@
+#include"string_.h"
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+String foo()
+{
+	return String("five");
+}
+
+int main()
+{
+	{
+		String s0;
+		String s1("one");
+		String s2 = "two";
+		String s3(s1);
+		String s4 = s1;
+		s3 = s1;
+
+		String s5 = String("three");
+		String s6 = (String)"four";
+		String s7 = foo();
+		s5 = String("six");
+		//s7 = foo();	//为什么报错
+
+		String s8(String("seven"));
+		String s9 = std::move(s1);	//move之后s1就变为空了，不能再调用了
+		String s10(std::move(s2));
+		s8 = std::move(s3);
+
+		vector<int> v{ 1,2,3 };
+		vector<int> v2 = std::move(v);
+
+	}
+	system("pause");
+	return 0;
+}

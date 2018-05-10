@@ -2,7 +2,7 @@
 
 class String {
 public:
-	String(const char* s = "");
+	String(const char* s = nullptr);
 	String(const String&);
 	String& operator=(const String&);
 	String(String&&);

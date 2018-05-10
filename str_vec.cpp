@@ -1,7 +1,13 @@
 #include"str_vec.h"
 #include<memory>
 
+#pragma warning( disable : 4996 )
+//#define D_SCL_SECURE_NO_WARNINGS
 
+//alloc可能有多块已经分配的内存，所以我们怎么释放某个内存块呢？
+//三个指针用于释放对应的内存
+//销毁元素（析构）: 使用first_free，elements
+//释放内存: 使用cap，elements
 void StrVec::free()
 {
 	//销毁要从尾部开始,为什么要一个个元素销毁呢，要一个个的析构？
@@ -24,6 +30,9 @@ void StrVec::free()
 //	cap = new_elem + 
 //}
 
+//std::move(*beg)调用移动构造函数，所以在free()的时候，原对象逐个元素destory，
+//讲道理应该没有调用析构函数，因为原string在移动构造的时候已经被置为nullptr了
+//可以肯定的是string只存在移动不存在拷贝
 void StrVec::reallocate()
 {
 	auto new_cap = size() ? 2 * size() : 1;
@@ -31,8 +40,8 @@ void StrVec::reallocate()
 	auto elem = newdata;
 	auto beg = elements;
 	for (; beg != first_free; )
-		alloc.construct(elem++, std::move(*beg++));
-	free();
+		alloc.construct(elem++, std::move(*beg++));	
+	free();	//destory原对象并且释放原内存，但是由于std::move析构函数没有调用
 	elements = newdata;
 	first_free = elem;
 	cap = newdata + new_cap;

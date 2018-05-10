@@ -32,5 +32,5 @@ private:
 	std::string* elements;	//首元素指针
 	std::string* first_free;//最后一个元素元素之后的位置
 	std::string* cap;		//内配的内存之后一个位置
-	static std::allocator<std::string> alloc;	//分配一块存放string的内存（类似vector<string>）
+	/*static*/ std::allocator<std::string> alloc;	//分配一块存放string的内存（类似vector<string>）
 };
