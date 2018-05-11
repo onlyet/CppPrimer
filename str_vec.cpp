@@ -53,11 +53,17 @@ void StrVec::push_back(const std::string &s)
 	alloc.construct(first_free++, s);
 }
 
+void StrVec::push_back(const std::string &&s)
+{
+	chk_n_alloc();
+	alloc.construct(first_free++, std::move(s));
+}
+
 std::pair<std::string*, std::string*> 
 StrVec::alloc_n_copy(const std::string *lhs, const std::string *rhs)
 {
-	std::string* new_elem = alloc.allocate(rhs - lhs);
-	return { new_elem, std::uninitialized_copy(lhs, rhs, new_elem) };	//uninitialized_copy:返回最后一个构造的元素之后的位置
+	std::string* new_elem = alloc.allocate(rhs - rhs);
+	return { new_elem, std::uninitialized_copy(rhs, rhs, new_elem) };	//uninitialized_copy:返回最后一个构造的元素之后的位置
 }
 
 StrVec::StrVec(const StrVec &rhs)
@@ -77,4 +83,45 @@ StrVec& StrVec::operator=(const StrVec &rhs)
 	first_free = cap = data.second;
 	//}
 	return *this;
+}
+
+StrVec::StrVec(std::initializer_list<std::string> il) 
+{
+	auto data = alloc_n_copy(il.begin(), il.end());
+	elements = data.first;
+	first_free = cap = data.second;
+}
+
+StrVec::StrVec(StrVec &&rhs) noexcept 
+	: elements(rhs.elements), first_free(rhs.first_free), cap(rhs.cap)
+{
+	rhs.elements = rhs.first_free = rhs.cap = nullptr;
+}
+
+StrVec& StrVec::operator=(StrVec &&rhs) noexcept
+{
+	if (this != &rhs) {
+		free();
+		elements = rhs.elements;
+		first_free = rhs.first_free;
+		cap = rhs.cap;
+		rhs.elements = rhs.first_free = rhs.cap = nullptr;
+	}
+	return *this;
+}
+
+StrVec& StrVec::operator=(std::initializer_list<std::string> il)
+{
+	free();
+	auto data = alloc_n_copy(il.begin(), il.end());
+	elements = data.first;
+	first_free = cap = data.second;
+	return *this;
+}
+
+void StrVec::reserve(const size_t n)
+{
+	if (n < capacity()) {
+		auto data = alloc.allocate(n);
+	}
 }

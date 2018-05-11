@@ -1,22 +1,30 @@
 #include<string>
+#include<initializer_list>
 
 class StrVec {
 public:
 	StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr) {}
-	StrVec(std::initializer_list<std::string>);
+	StrVec(std::initializer_list<std::string> il);
 	StrVec(const StrVec&);
+	StrVec(StrVec&&) noexcept;
 	StrVec& operator=(const StrVec&);
-	StrVec(StrVec&&);
-	StrVec& operator=(StrVec&&);
+	StrVec& operator=(StrVec&&) noexcept;
+	StrVec& operator=(std::initializer_list<std::string>);
 	~StrVec() { free(); }
 
 	void push_back(const std::string&);
-
+	void push_back(const std::string&&);
 
 	size_t size() const { return first_free - elements; }
 	size_t capacity() const { return cap - elements; }
 	std::string* begin() const { return elements; }
 	std::string* end() const { return first_free; }
+
+	std::string& operator[](size_t n) { return elements[n]; }
+	const std::string& operator[](size_t n) const { return elements[n]; }
+	void reserve(const size_t);
+	void resize(const size_t);
+	void resize(const size_t, const std::string&);
 
 private:
 	//保证至少能分配一个元素，如果不能则调用reallocate

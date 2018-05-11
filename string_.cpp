@@ -1,5 +1,6 @@
 #include <iostream>
 #include "string_.h"
+//#include <string>
 
 using namespace std;
 
@@ -59,4 +60,53 @@ String& String::operator=(String&& rhs)
 	}
 	cout << "move assginment: " << m_data << endl;
 	return *this;
+}
+
+
+String& String::operator+=(const String& rhs)
+{
+	char *new_data = new char[size() + rhs.size()];
+	strcpy(new_data, m_data);
+	strcpy(new_data + size(), rhs.m_data);
+	delete[] m_data;
+	m_data = new_data;
+	return *this;
+}
+
+String String::operator+(const String& rhs)
+{
+	String ret_str;
+	delete[] ret_str.m_data;
+	char *new_data = new char[size() + rhs.size()];
+	strcpy(new_data, m_data);
+	strcpy(new_data + size(), rhs.m_data);
+	ret_str.m_data = new_data;
+	return ret_str;
+}
+
+String String::substr(size_t pos, size_t count)
+{
+	if (pos > size() - 1) {
+		throw std::out_of_range("pos超出范围");
+	}
+	char* new_data;
+	String ret_str;
+	delete[] ret_str.m_data;
+	if (pos + count >= size()) {
+		new_data = new char[size() - pos];
+		strcpy(new_data, m_data + pos);
+	}
+	else {
+		new_data = new char[count];
+		strncpy(new_data, m_data + pos, count);
+	}
+		ret_str.m_data = new_data;
+	return ret_str;
+}
+
+char & String::at(size_t n)
+{
+	if (n >= strlen(m_data))
+		throw std::out_of_range("下标n超出范围");
+	return *(m_data + n);
 }
