@@ -3,6 +3,8 @@
 #include<memory>
 #include<algorithm>
 
+#pragma warning( disable : 4996 )
+
 namespace ch13_44 {
 	class String {
 	public:
