@@ -41,17 +41,23 @@ String& String::operator=(const String& rhs)
 
 String::~String()
 {
-	cout << "destructor: " <</* m_data <<*/ endl;
+	cout << "destructor: ";
+	if (m_data) {
+		cout << m_data << endl;
+	}
+	else {
+		cout << "m_data = null" << endl;
+	}
 	delete[] m_data;
 }
 
-String::String(String&& rhs) : m_data(rhs.m_data)
+String::String(String&& rhs) noexcept : m_data(rhs.m_data)
 {
 	rhs.m_data = nullptr;	//为空不会调用析构函数
 	cout << "move constructor: " << m_data << endl;
 }
 
-String& String::operator=(String&& rhs)
+String& String::operator=(String&& rhs) noexcept
 {
 	if (this != &rhs) {
 		delete[] m_data;

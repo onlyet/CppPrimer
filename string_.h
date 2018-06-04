@@ -4,9 +4,9 @@ class String {
 public:
 	String(const char* s = nullptr);
 	String(const String&);
-	String(String&&);
+	String(String&&) noexcept;
 	String& operator=(const String&);
-	String& operator=(String&&);
+	String& operator=(String&&) noexcept;
 	~String();
 
 	size_t size() const { return strlen(m_data); }
