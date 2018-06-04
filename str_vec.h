@@ -22,9 +22,10 @@ public:
 
 	std::string& operator[](size_t n) { return elements[n]; }
 	const std::string& operator[](size_t n) const { return elements[n]; }
-	void reserve(const size_t);
-	void resize(const size_t);
-	void resize(const size_t, const std::string&);
+	//重新分配内存，避免不必要的分配
+	void reserve(size_t);
+	void resize(size_t);
+	void resize(size_t, const std::string&);
 
 private:
 	//保证至少能分配一个元素，如果不能则调用reallocate
@@ -33,12 +34,14 @@ private:
 	std::pair<std::string*, std::string*> alloc_n_copy(const std::string*, const std::string*);	
 	//销毁已构造的元素，并释放内存
 	void free();
+	//分配给定空间，并且移动
+	void alloc_n_move(size_t new_cap);
 	//空间不够的时候重新分配足够的内存
 	void reallocate();
 
 private:
 	std::string* elements;	//首元素指针
-	std::string* first_free;//最后一个元素元素之后的位置
-	std::string* cap;		//内配的内存之后一个位置
+	std::string* first_free;//尾后元素
+	std::string* cap;		//分配的内存之后一个位置
 	/*static*/ std::allocator<std::string> alloc;	//分配一块存放string的内存（类似vector<string>）
 };

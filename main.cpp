@@ -28,14 +28,17 @@ int main()
 
 		//String s8(String("seven"));
 		//String s9 = std::move(s1);	//move之后s1就变为空了，不能再调用了
+		//cout << s1.c_str() << endl;
 		//String s10(std::move(s2));
 		//s8 = std::move(s3);
+
+		String s11(std::move(String()));
 
 		//vector<int> v{ 1,2,3 };
 		//vector<int> v2 = std::move(v);
 
-		const char *p = "abc";
-		cout << *p << endl;
+		//const char *p = "abc";
+		//cout << *p << endl;
 	}
 	system("pause");
 	return 0;
