@@ -1,9 +1,12 @@
 #include"str_vec.h"
+#include<iostream>
 #include<memory>
 #include<algorithm>
 
 #pragma warning( disable : 4996 )
 //#define D_SCL_SECURE_NO_WARNINGS
+
+using namespace std;
 
 //alloc可能有多块已经分配的内存，所以我们怎么释放某个内存块呢？
 //三个指针用于释放对应的内存
@@ -47,12 +50,14 @@ void StrVec::reallocate()
 
 void StrVec::push_back(const std::string &s)
 {
+	cout << "push_back string&" << endl;
 	chk_n_alloc();
 	alloc.construct(first_free++, s);
 }
 
-void StrVec::push_back(const std::string &&s)
+void StrVec::push_back(std::string &&s)
 {
+	cout << "push_back string&&" << endl;
 	chk_n_alloc();
 	alloc.construct(first_free++, std::move(s));
 }
@@ -60,7 +65,7 @@ void StrVec::push_back(const std::string &&s)
 std::pair<std::string*, std::string*> 
 StrVec::alloc_n_copy(const std::string *lhs, const std::string *rhs)
 {
-	std::string* new_elem = alloc.allocate(rhs - rhs);
+	auto new_elem = alloc.allocate(rhs - lhs);
 	return { new_elem, std::uninitialized_copy(lhs, rhs, new_elem) };	//uninitialized_copy:返回最后一个构造的元素之后的位置
 }
 
@@ -85,6 +90,7 @@ StrVec& StrVec::operator=(const StrVec &rhs)
 
 StrVec::StrVec(std::initializer_list<std::string> il) 
 {
+	cout << "initializer_list" << endl;
 	auto data = alloc_n_copy(il.begin(), il.end());
 	elements = data.first;
 	first_free = cap = data.second;
@@ -146,4 +152,13 @@ void StrVec::resize(size_t new_cap, const std::string &s)
 		while (first_free != elements + new_cap)
 			alloc.destroy(--first_free);
 	}
+}
+
+void StrVec::print()
+{
+	auto elem = elements;
+	for (int i = 0; i < size(); ++i) {
+		cout << *elem++ << " ";
+	}
+	cout << endl;
 }

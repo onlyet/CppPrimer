@@ -13,7 +13,7 @@ public:
 	~StrVec() { free(); }
 
 	void push_back(const std::string&);
-	void push_back(const std::string&&);
+	void push_back(std::string&&);
 
 	size_t size() const { return first_free - elements; }
 	size_t capacity() const { return cap - elements; }
@@ -26,6 +26,8 @@ public:
 	void reserve(size_t);
 	void resize(size_t);
 	void resize(size_t, const std::string&);
+
+	void print();
 
 private:
 	//保证至少能分配一个元素，如果不能则调用reallocate

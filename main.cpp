@@ -1,5 +1,7 @@
 #include"string_.h"
 #include"HasPtr.h"
+#include"str_vec.h"
+#include"17_3_1.h"
 
 #include<iostream>
 #include <utility>
@@ -53,9 +55,23 @@ void has_ptr_tt()
 	hp = std::move(hp2);
 }
 
+void str_vec_tt()
+{
+	StrVec sv({ "hello", "world" });
+	string str("!!");
+	//sv.push_back(std::move("!!"));
+	sv.push_back(str);
+	sv.print();
+}
+
 int main()
 {
-	has_ptr_tt();
+	{
+		//has_ptr_tt();
+		//str_vec_tt();
 
+		ch17_3_1();
+	}
+	system("pause");
 	return 0;
 }
