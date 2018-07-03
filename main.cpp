@@ -70,7 +70,8 @@ int main()
 		//has_ptr_tt();
 		//str_vec_tt();
 
-		ch17_3_1();
+		//ch17_3_1();
+		ch17_3_3();
 	}
 	system("pause");
 	return 0;
