@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<iostream>
 #include<regex>
 #include<string>
@@ -84,11 +84,11 @@ void ch_17_4_2()
 	}
 }
 
-//Ϊʲô���һ�е�cntû��д��end
+//为什么最后一行的cnt没有写到end
 
 int ch_17_5()
 {
-	fstream inOut("copyOut.txt", fstream::ate | fstream::in | fstream::out | fstream::binary);
+	fstream inOut("copyOut.txt", fstream::ate | fstream::in | fstream::out);
 	if (!inOut) {
 		cerr << "Unable to open file!" << endl;
 		return EXIT_FAILURE;
@@ -104,11 +104,12 @@ int ch_17_5()
 		inOut.seekp(0, fstream::end);
 		inOut << cnt;
 		if (mark != end_mark) {
-			inOut << " ";
+			inOut << "-";
 		}
 		inOut.seekg(mark);
 	}
 	inOut.seekp(0, fstream::end);
 	inOut << "\n";
+	inOut.flush();
 	return 0;
 }
